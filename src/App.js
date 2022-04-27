@@ -7,11 +7,7 @@ import Content from "./components/Content/Content";
 
 function App() {
   return (
-    <Box
-      sx={{
-        height: "100vh",
-      }}
-    >
+    <Box>
       <Header />
       <Content />
     </Box>

@@ -1,52 +1,39 @@
 // React
 import React from "react";
 import { useSelector } from "react-redux";
-
 // components
-import { Avatar, Card, CardHeader, CardMedia, Grid, IconButton } from "@mui/material";
-import { MoreVert } from "@mui/icons-material";
+import { Card, CardMedia, Grid, CardContent, Typography } from "@mui/material";
+import { selectShopItems } from "../../redux/slices/shopItems/shopItemsSlice";
+import Header from "./components/Header";
+import Actions from "./components/CardActions";
+import Footer from "./components/Footer";
 
 export default function Content() {
-    const storeItems = useSelector((state) => {
-        return state;
-    });
-
-    console.log(storeItems);
-
+    const shopItems = useSelector(selectShopItems)
     return (
         <Grid container justifyContent="center" sx={{
-            height: "100%",
-            mt: "10%",
+            mt: "2%",
+            mb: "2%",
             flexWrap: "wrap"
         }}>
-            {storeItems.map((el, i) => {
+            {shopItems.map((el, i, arr) => {
                 return (
-                    <Card s sx={{
-                        height: "300px",
+                    <Card sx={{
                         width: "400px",
                         ml: "15px",
                         mr: "15px",
-                        mt: "25px"
-                    }}>
-                        <CardHeader
-                            avatar={
-                                <Avatar sx={{ bgcolor: 'red[500]' }} aria-label="recipe">
-                                    R
-                                </Avatar>
-                            }
-                            action={
-                                <IconButton aria-label="settings">
-                                    <MoreVert />
-                                </IconButton>
-                            }
-                            title="Shrimp and Chorizo Paella"
-                            subheader="September 14, 2016"
-                        />
+                        mt: "25px",
+                        bgcolor: "rgb(18, 18, 18)",
+                        color: "rgba(255, 255, 255, 0.7)"
+                    }} key={"shopItem" + i}>
+                        <Header el={el} />
                         <CardMedia
                             component="img"
-                            height="194"
-                            src="https://media.istockphoto.com/photos/shopping-cart-with-different-food-products-picture-id1147086804?k=20&m=1147086804&s=612x612&w=0&h=oZjgcgd7qOd85xV4p6qmLdZDOriLTuCbxLGU3AZfuXo="
+                            height="auto"
+                            src="https://cdn5.vectorstock.com/i/1000x1000/49/94/e-shop-vector-4804994.jpg"
                         />
+                        <Actions el={el} />
+                        <Footer el={el} />
                     </Card>
                 )
             })}
