@@ -2,6 +2,7 @@
 import React from 'react'
 import { selectMyInfo } from '../../../redux/slices/myInfo/myInfo'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
 // components
 import { Grid, Typography } from '@mui/material'
 import { Home, ShoppingBasket } from '@mui/icons-material'
@@ -29,6 +30,9 @@ export default function Menu({ setActivePage, activePage }) {
                     borderBottom: activePage === 0 && '2px solid white',
                 }} onClick={() => {
                     setActivePage(0)
+                    axios.patch('http://localhost:8000/pages', {
+                        activePage: 0
+                    })
                 }} />
             </Grid>
             <Grid item>
@@ -37,6 +41,9 @@ export default function Menu({ setActivePage, activePage }) {
                     cursor: "pointer"
                 }} onClick={() => {
                     setActivePage(1)
+                    axios.patch('http://localhost:8000/pages', {
+                        activePage: 1
+                    })
                 }} >
                     <ShoppingBasket sx={{
                         fontSize: "30px",

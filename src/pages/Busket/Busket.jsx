@@ -1,5 +1,5 @@
 // React
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { selectMyInfo } from '../../redux/slices/myInfo/myInfo'
 // components
@@ -8,7 +8,6 @@ import Actions from '../Main/components/CardActions'
 import Footer from '../Main/components/Footer'
 import Header from '../Main/components/Header'
 import BuyItem from './components/BuyItem'
-import axios from 'axios'
 
 const getSum = (itemsInBusket) => {
     let sum = 0

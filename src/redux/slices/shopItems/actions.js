@@ -29,3 +29,7 @@ export const removeAll = (state) =>
     itemsLeft: el.count ? el.itemsLeft + el.count : el.itemsLeft,
     count: 0,
   }));
+
+export const addElems = (state, { payload }) => {
+  return payload.items;
+};

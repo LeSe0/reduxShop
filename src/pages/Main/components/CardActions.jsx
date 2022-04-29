@@ -3,16 +3,16 @@ import React from 'react'
 import { addToBasketAction, removeFromBasketAction } from '../../../redux/slices/myInfo/actionCreators';
 import { buyItemAction, removeItemAction } from '../../../redux/slices/shopItems/actionCreators';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectMyInfo } from '../../../redux/slices/myInfo/myInfo';
 // components
 import { Add, Remove } from '@mui/icons-material';
 import { Grid, Typography, CardActions } from '@mui/material';
-import { useDispatch } from 'react-redux';
 
 export default function Actions({ el }) {
 
     const dispatch = useDispatch();
-
-    useE
+    const myInfo = useSelector(selectMyInfo)
 
     return (
         <CardActions>
@@ -33,10 +33,20 @@ export default function Actions({ el }) {
                         borderRadius: "100%",
                     }} onClick={() => {
                         if (el.itemsLeft > 0) {
-                            axios.post('http://localhost:8000/myInfo', el).then(() => {
-                                dispatch(buyItemAction(el.id))
-                                dispatch(addToBasketAction(el))
-                            }).then(res => dispatch())
+                            if (myInfo.find((elem) => elem.id == el.id)) {
+                                axios.put('http://localhost:8000/myInfo/' + el.id, {
+                                    count: el.count ? el.count + 1 : 1
+                                })
+                            }
+                            else {
+                                axios.patch('http://localhost:8000/shopItems/' + el.id, {
+                                    count: el.count
+                                })
+                                axios.post('http://localhost:8000/myInfo', el).then(() => {
+                                    dispatch(buyItemAction(el.id))
+                                    dispatch(addToBasketAction(el))
+                                })
+                            }
                         }
                     }} />
                     <Remove sx={{

@@ -11,3 +11,10 @@ export const buyItemAction = (id) => ({
     id,
   },
 });
+
+export const addElements = (items) => ({
+  type: "addElems",
+  payload: {
+    items,
+  },
+});
