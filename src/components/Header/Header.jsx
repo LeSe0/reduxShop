@@ -2,21 +2,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 // components
-import { AppBar, IconButton, Typography, Grid } from "@mui/material";
+import { AppBar, IconButton, Grid } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { selectMyInfo } from "../../redux/slices/myInfo/myInfo";
+import Menu from "./components/Menu";
 
-const getSum = (itemsInBusket) => {
-    let sum = 0
-    itemsInBusket.forEach(({ count, price }) => sum += price * count)
-    return sum
-}
-
-export default function Header() {
+export default function Header({ setActivePage, activePage }) {
 
     const myInfo = useSelector(selectMyInfo)
-
-    console.log(myInfo);
 
     const dispatch = useDispatch()
 
@@ -39,8 +32,8 @@ export default function Header() {
                 <Grid item sx={{
                     mr: "50px"
                 }}>
-                    <Typography>Items Price : {getSum(myInfo)}$</Typography>
-                </Grid>c
+                    <Menu setActivePage={setActivePage} activePage={activePage} />
+                </Grid>
             </Grid>
         </AppBar>
     )

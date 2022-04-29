@@ -2,6 +2,7 @@
 import React from 'react'
 import { addToBasketAction, removeFromBasketAction } from '../../../redux/slices/myInfo/actionCreators';
 import { buyItemAction, removeItemAction } from '../../../redux/slices/shopItems/actionCreators';
+import axios from 'axios';
 // components
 import { Add, Remove } from '@mui/icons-material';
 import { Grid, Typography, CardActions } from '@mui/material';
@@ -9,7 +10,9 @@ import { useDispatch } from 'react-redux';
 
 export default function Actions({ el }) {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    useE
 
     return (
         <CardActions>
@@ -30,8 +33,10 @@ export default function Actions({ el }) {
                         borderRadius: "100%",
                     }} onClick={() => {
                         if (el.itemsLeft > 0) {
-                            dispatch(buyItemAction(el.id));
-                            dispatch(addToBasketAction(el))
+                            axios.post('http://localhost:8000/myInfo', el).then(() => {
+                                dispatch(buyItemAction(el.id))
+                                dispatch(addToBasketAction(el))
+                            }).then(res => dispatch())
                         }
                     }} />
                     <Remove sx={{
@@ -43,7 +48,7 @@ export default function Actions({ el }) {
                     }} onClick={() => {
                         if (el.itemsLeft < el.itemsLeft + el.count) {
                             dispatch(removeItemAction(el.id));
-                            dispatch(removeFromBasketAction(el.id))
+                            dispatch(removeFromBasketAction(el))
                         }
                     }} />
                 </Grid>
