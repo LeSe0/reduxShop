@@ -30,9 +30,14 @@ export default function Menu({ setActivePage, activePage }) {
                     borderBottom: activePage === 0 && '2px solid white',
                 }} onClick={() => {
                     setActivePage(0)
-                    axios.patch('http://localhost:8000/pages', {
-                        activePage: 0
-                    })
+                    axios.get("http://localhost:8000/pages")
+                        .then(res => res.data.activeCategory)
+                        .then(res => {
+                            axios.patch('http://localhost:8000/pages', {
+                                activePage: 0,
+                                activeCategory: res
+                            })
+                        })
                 }} />
             </Grid>
             <Grid item>
@@ -41,9 +46,14 @@ export default function Menu({ setActivePage, activePage }) {
                     cursor: "pointer"
                 }} onClick={() => {
                     setActivePage(1)
-                    axios.patch('http://localhost:8000/pages', {
-                        activePage: 1
-                    })
+                    axios.get("http://localhost:8000/pages")
+                        .then(res => res.data.activeCategory)
+                        .then(res => {
+                            axios.patch('http://localhost:8000/pages', {
+                                activePage: 1,
+                                activeCategory: res
+                            })
+                        })
                 }} >
                     <ShoppingBasket sx={{
                         fontSize: "30px",

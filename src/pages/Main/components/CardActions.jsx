@@ -34,16 +34,34 @@ export default function Actions({ el }) {
                     }} onClick={() => {
                         if (el.itemsLeft > 0) {
                             if (myInfo.find((elem) => elem.id == el.id)) {
+                                axios.put('http://localhost:8000/shopItems/' + el.id, {
+                                    ...el,
+                                    count: el.count + 1,
+                                    itemsLeft: el.itemsLeft - 1
+                                }).then(() => {
+                                    dispatch(buyItemAction(el.id))
+                                })
                                 axios.put('http://localhost:8000/myInfo/' + el.id, {
-                                    count: el.count ? el.count + 1 : 1
+                                    ...el,
+                                    count: el.count + 1,
+                                    itemsLeft: el.itemsLeft - 1
+                                }).then(() => {
+                                    dispatch(addToBasketAction(el))
                                 })
                             }
                             else {
-                                axios.patch('http://localhost:8000/shopItems/' + el.id, {
-                                    count: el.count
-                                })
-                                axios.post('http://localhost:8000/myInfo', el).then(() => {
+                                axios.put('http://localhost:8000/shopItems/' + el.id, {
+                                    ...el,
+                                    count: el.count + 1,
+                                    itemsLeft: el.itemsLeft - 1
+                                }).then(() => {
                                     dispatch(buyItemAction(el.id))
+                                })
+                                axios.post('http://localhost:8000/myInfo', {
+                                    ...el,
+                                    count: el.count + 1,
+                                    itemsLeft: el.itemsLeft - 1
+                                }).then(() => {
                                     dispatch(addToBasketAction(el))
                                 })
                             }
@@ -57,8 +75,52 @@ export default function Actions({ el }) {
                         ml: "10px"
                     }} onClick={() => {
                         if (el.itemsLeft < el.itemsLeft + el.count) {
-                            dispatch(removeItemAction(el.id));
-                            dispatch(removeFromBasketAction(el))
+                            if (myInfo.find((elem) => elem.id == el.id)) {
+                                if (el.count <= 1) {
+                                    axios.put('http://localhost:8000/shopItems/' + el.id, {
+                                        ...el,
+                                        count: el.count - 1,
+                                        itemsLeft: el.itemsLeft + 1
+                                    }).then(() => {
+                                        dispatch(removeItemAction(el.id));
+                                    })
+                                    axios.delete('http://localhost:8000/myInfo/' + el.id).then(() => {
+                                        dispatch(removeFromBasketAction(el));
+                                    })
+                                }
+                                else {
+                                    axios.put('http://localhost:8000/shopItems/' + el.id, {
+                                        ...el,
+                                        count: el.count - 1,
+                                        itemsLeft: el.itemsLeft + 1
+                                    }).then(() => {
+                                        dispatch(removeItemAction(el.id));
+                                    })
+                                    axios.put('http://localhost:8000/myInfo/' + el.id, {
+                                        ...el,
+                                        count: el.count - 1,
+                                        itemsLeft: el.itemsLeft + 1
+                                    }).then(() => {
+                                        dispatch(removeFromBasketAction(el))
+                                    })
+                                }
+                            }
+                            else {
+                                axios.put('http://localhost:8000/shopItems/' + el.id, {
+                                    ...el,
+                                    count: el.count - 1,
+                                    itemsLeft: el.itemsLeft + 1
+                                }).then(() => {
+                                    dispatch(removeItemAction(el.id));
+                                })
+                                axios.put('http://localhost:8000/myInfo' + el.id, {
+                                    ...el,
+                                    count: el.count - 1,
+                                    itemsLeft: el.itemsLeft + 1
+                                }).then(() => {
+                                    dispatch(removeFromBasketAction(el))
+                                })
+                            }
                         }
                     }} />
                 </Grid>

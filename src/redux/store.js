@@ -8,8 +8,6 @@ const defaultStore = {
   shopItems: [],
 };
 
-console.log(defaultStore);
-
 const store = createStore(
   combineReducers({
     myInfo: myInfoReducer,

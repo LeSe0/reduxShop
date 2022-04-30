@@ -4,7 +4,7 @@ export const addToBasket = (state, { payload }) => {
       ...state,
       {
         ...payload.item,
-        count: payload.item.count ? payload.item.count + 1 : 1,
+        count: payload.item.count + 1,
         itemsLeft: payload.item.itemsLeft - 1,
       },
     ];
@@ -14,7 +14,7 @@ export const addToBasket = (state, { payload }) => {
         if (el.id === payload.item.id)
           return {
             ...el,
-            count: el.count + 1,
+            count: el.count != 0 ? el.count + 1 : 1,
             itemsLeft: payload.item.itemsLeft - 1,
           };
         return el;
@@ -23,7 +23,7 @@ export const addToBasket = (state, { payload }) => {
         ? [
             {
               ...payload.item,
-              count: payload.item.count ? payload.item.count + 1 : 1,
+              count: payload.item.count > 0 ? payload.item.count + 1 : 1,
             },
           ]
         : []),

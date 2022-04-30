@@ -7,14 +7,15 @@ import { selectShopItems } from "../../redux/slices/shopItems/shopItemsSlice";
 import Header from "./components/Header";
 import Actions from "./components/CardActions";
 import Footer from "./components/Footer";
+import Categories from "./components/Categories";
 
 export default function Main() {
-    let shopItems = useSelector(selectShopItems)
 
-    console.log(shopItems);
+    let shopItems = useSelector(selectShopItems)
 
     return (
         <Stack alignItems="center">
+            <Categories />
             <Grid container justifyContent="center" sx={{
                 mb: "2%",
                 flexWrap: "wrap"

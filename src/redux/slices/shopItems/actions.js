@@ -3,7 +3,7 @@ export const buyItem = (state, { payload }) => {
     if (el.id === payload.id) {
       return {
         ...el,
-        count: el.count ? el.count + 1 : 1,
+        count: el.count + 1,
         itemsLeft: el.itemsLeft - 1,
       };
     }
@@ -26,7 +26,7 @@ export const removeItem = (state, { payload }) =>
 export const removeAll = (state) =>
   state.map((el) => ({
     ...el,
-    itemsLeft: el.count ? el.itemsLeft + el.count : el.itemsLeft,
+    itemsLeft: el.itemsLeft + el.count,
     count: 0,
   }));
 

@@ -1,6 +1,9 @@
 // React
 import { Button, Grid } from '@mui/material'
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addElements } from '../../../redux/slices/shopItems/actionCreators'
 
 const buttonStyle = {
     fontWeight: "700",
@@ -39,6 +42,17 @@ export default function Categories({ activeCategory, setActiveCategory }) {
 
     const [activeButton, changeActiveButton] = useState(0)
 
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8000/pages")
+            .then((res) => {
+                changeActiveButton(res.data.activeCategory)
+            })
+    }, [])
+
+
     return (
         <Grid container alignItems="center" justifyContent="space-evenly" sx={{
             height: "80px",
@@ -51,6 +65,25 @@ export default function Categories({ activeCategory, setActiveCategory }) {
                             ? activeButtonStyle
                             : buttonStyle}
                             onClick={() => {
+                                axios.get("http://localhost:8000/pages")
+                                    .then(res => res.data.activePage)
+                                    .then(res => {
+                                        axios.patch('http://localhost:8000/pages', {
+                                            activePage: res,
+                                            activeCategory: i
+                                        })
+                                    })
+                                el.title != "All"
+                                    ? axios.get("http://localhost:8000/shopItems?category=" + el.title.toLowerCase())
+                                        .then(res => res.data)
+                                        .then(res => {
+                                            dispatch(addElements(res))
+                                        })
+                                    : axios.get("http://localhost:8000/shopItems")
+                                        .then(res => res.data)
+                                        .then(res => {
+                                            dispatch(addElements(res))
+                                        })
                                 changeActiveButton(i)
                             }}>{el.title}</Button>
                     </Grid>
