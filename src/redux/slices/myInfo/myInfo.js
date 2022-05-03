@@ -1,7 +1,8 @@
+import axios from "axios";
+import { changeElementsInBusketAction } from "./actionCreators";
 import {
   addToBasket,
   removeFromBasket,
-  addElemsToBasket,
   changeElementsInBusket,
 } from "./actions";
 
@@ -22,4 +23,15 @@ export const myInfoReducer = (state = [], action) => {
     default:
       return state;
   }
+};
+
+export const getMyInfo = (dispatch) => {
+  axios
+    .get("http://localhost:8000/myInfo")
+    .then((res) => {
+      return res.data;
+    })
+    .then((res) => {
+      dispatch(changeElementsInBusketAction(res));
+    });
 };

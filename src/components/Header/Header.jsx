@@ -1,13 +1,13 @@
 // React
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selectMyInfo } from "../../redux/slices/myInfo/myInfo";
 // components
 import { AppBar, IconButton, Grid } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { selectMyInfo } from "../../redux/slices/myInfo/myInfo";
 import Menu from "./components/Menu";
 
-export default function Header({ setActivePage, activePage }) {
+export default function Header() {
 
     const myInfo = useSelector(selectMyInfo)
 
@@ -32,7 +32,7 @@ export default function Header({ setActivePage, activePage }) {
                 <Grid item sx={{
                     mr: "50px"
                 }}>
-                    <Menu setActivePage={setActivePage} activePage={activePage} />
+                    <Menu />
                 </Grid>
             </Grid>
         </AppBar>

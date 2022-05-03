@@ -1,94 +1,85 @@
 // React
-import { Button, Grid } from '@mui/material'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { addElements } from '../../../redux/slices/shopItems/actionCreators'
+import React, { useEffect } from "react";
+// store
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { changeActiveCategory } from "../../../redux/slices/pagesSlice/actionCreators";
+import { getActiveCategory, selectActiveCategory } from "../../../redux/slices/pagesSlice/pagesSlice";
+// component
+import { Button, Grid } from "@mui/material";
 
 const buttonStyle = {
-    fontWeight: "700",
+  fontWeight: "700",
+  background: "rgb(18, 18, 18)",
+  color: "white",
+  "&:hover": {
     background: "rgb(18, 18, 18)",
-    color: "white",
-    "&:hover": {
-        background: "rgb(18, 18, 18)",
-    }
-}
+  },
+};
 
 const activeButtonStyle = {
-    fontWeight: "700",
+  fontWeight: "700",
+  background: "white",
+  color: "rgb(18, 18, 18)",
+  "&:hover": {
     background: "white",
-    color: "rgb(18, 18, 18)",
-    "&:hover": {
-        background: "white",
-    }
-}
+  },
+};
 
 let buttons = [
-    {
-        title: 'All',
-    },
-    {
-        title: 'Vegetables',
-    },
-    {
-        title: 'Meat',
-    },
-    {
-        title: 'Fruits',
-    }
-]
+  {
+    title: "All",
+  },
+  {
+    title: "Vegetables",
+  },
+  {
+    title: "Meat",
+  },
+  {
+    title: "Fruits",
+  },
+];
 
-export default function Categories({ activeCategory, setActiveCategory }) {
+export default function Categories() {
+  const activeCategory = useSelector(selectActiveCategory);
+  const dispatch = useDispatch();
 
-    const [activeButton, changeActiveButton] = useState(0)
+  useEffect(() => {
+    dispatch(getActiveCategory(activeCategory))
+  }, [activeCategory]);
 
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        axios
-            .get("http://localhost:8000/pages")
-            .then((res) => {
-                changeActiveButton(res.data.activeCategory)
-            })
-    }, [])
-
-
-    return (
-        <Grid container alignItems="center" justifyContent="space-evenly" sx={{
-            height: "80px",
-            width: "80%"
-        }}>
-            {buttons.map((el, i) => {
-                return (
-                    <Grid item key={"categorieButtons" + i}>
-                        <Button sx={i === activeButton
-                            ? activeButtonStyle
-                            : buttonStyle}
-                            onClick={() => {
-                                axios.get("http://localhost:8000/pages")
-                                    .then(res => res.data.activePage)
-                                    .then(res => {
-                                        axios.patch('http://localhost:8000/pages', {
-                                            activePage: res,
-                                            activeCategory: i
-                                        })
-                                    })
-                                el.title != "All"
-                                    ? axios.get("http://localhost:8000/shopItems?category=" + el.title.toLowerCase())
-                                        .then(res => res.data)
-                                        .then(res => {
-                                            dispatch(addElements(res))
-                                        })
-                                    : axios.get("http://localhost:8000/shopItems")
-                                        .then(res => res.data)
-                                        .then(res => {
-                                            dispatch(addElements(res))
-                                        })
-                                changeActiveButton(i)
-                            }}>{el.title}</Button>
-                    </Grid>
-                )
-            })}
-        </Grid>
-    )
+  return (
+    <Grid
+      container
+      alignItems="center"
+      justifyContent="space-evenly"
+      sx={{
+        height: "80px",
+        width: "80%",
+      }}
+    >
+      {buttons.map((el, i) => {
+        return (
+          <Grid item key={"categorieButtons" + i}>
+            <Button
+              sx={el.title === activeCategory ? activeButtonStyle : buttonStyle}
+              onClick={() => {
+                axios
+                  .patch("http://localhost:8000/pages", {
+                    activePage: 0,
+                    activeCategory: el.title,
+                  })
+                  .then(() => {
+                    dispatch(changeActiveCategory(el.title));
+                  })
+              }}
+            >
+              {el.title}
+            </Button>
+          </Grid>
+        );
+      })}
+    </Grid>
+  );
 }

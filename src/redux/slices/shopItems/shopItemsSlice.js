@@ -1,3 +1,5 @@
+import axios from "axios";
+import { addElements } from "./actionCreators";
 import { buyItem, removeAll, removeItem, addElems } from "./actions";
 
 export const selectShopItems = (state) => {
@@ -17,4 +19,15 @@ export const shopItemsReducer = (state = [], action) => {
     default:
       return state;
   }
+};
+
+export const getShopItems = (dispatch) => {
+  axios
+    .get("http://localhost:8000/shopItems")
+    .then((res) => {
+      return res.data;
+    })
+    .then((res) => {
+      dispatch(addElements(res));
+    });
 };
