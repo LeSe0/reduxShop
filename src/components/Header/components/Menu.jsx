@@ -4,10 +4,13 @@ import { selectMyInfo } from "../../../redux/slices/myInfo/myInfo";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { changeActivePage } from "../../../redux/slices/pagesSlice/actionCreators";
-import { selectActivePage } from "../../../redux/slices/pagesSlice/pagesSlice";
+import { selectActivePage, selectPages } from "../../../redux/slices/pagesSlice/pagesSlice";
 // components
-import { Grid, Typography } from "@mui/material";
-import { Home, ShoppingBasket } from "@mui/icons-material";
+import { Grid, IconButton, Typography } from "@mui/material";
+import { Home, Save, ShoppingBasket } from "@mui/icons-material";
+import { selectShopItems } from "../../../redux/slices/shopItems/shopItemsSlice";
+import { selectFetch } from "../../../redux/slices/fetchingData/fetchingData";
+import { saveData } from "../../../helpers/saveData";
 
 const getSum = (itemsInBusket) => {
   let sum = 0;
@@ -19,11 +22,14 @@ const getSum = (itemsInBusket) => {
 
 export default function Menu() {
   const myInfo = useSelector(selectMyInfo);
+  const shopItems = useSelector(selectShopItems);
+  const pages = useSelector(selectPages);
   const activePageSelect = useSelector(selectActivePage);
   const dispatch = useDispatch();
+  const fetchingData = useSelector(selectFetch);
 
   return (
-    <Grid container>
+    <Grid container alignItems="center">
       <Grid
         item
         sx={{
@@ -88,6 +94,28 @@ export default function Menu() {
             {getSum(myInfo)}
           </Typography>
         </Grid>
+      </Grid>
+      <Grid
+        item
+        sx={{
+          ml: "15px",
+          '& .Mui-disabled' : {
+            '& svg' : {
+              color : "#ccd1db !important",
+            }
+          }
+        }}
+      >
+        <IconButton disabled={!fetchingData} onClick = {() => {
+          dispatch(saveData(myInfo , shopItems , pages))
+        }}>
+          <Save
+            sx={{
+              color: "white",
+              fontSize : "30px"
+            }}
+          />
+        </IconButton>
       </Grid>
     </Grid>
   );

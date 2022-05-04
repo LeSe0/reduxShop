@@ -20,7 +20,7 @@ export default function Main() {
                 mb: "2%",
                 flexWrap: "wrap"
             }}>
-                {shopItems && shopItems.map((el, i) => {
+                { shopItems.map((el, i) => {
                     return (
                         <Card sx={{
                             width: "400px",

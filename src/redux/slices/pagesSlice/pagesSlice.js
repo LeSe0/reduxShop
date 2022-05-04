@@ -33,6 +33,10 @@ export const getActivePage = (dispatch) => {
     );
 };
 
+export const selectPages = (store) => {
+  return store.pages
+}
+
 export const getActiveCategory = (activeCategory) => (dispatch) => {
   activeCategory != "All"
     ? axios
