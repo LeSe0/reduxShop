@@ -24,6 +24,7 @@ export const addToBasket = (state, { payload }) => {
             {
               ...payload.item,
               count: payload.item.count > 0 ? payload.item.count + 1 : 1,
+              itemsLeft : payload.item.itemsLeft - 1
             },
           ]
         : []),

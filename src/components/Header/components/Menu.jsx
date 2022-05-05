@@ -11,6 +11,7 @@ import { Home, Save, ShoppingBasket } from "@mui/icons-material";
 import { selectShopItems } from "../../../redux/slices/shopItems/shopItemsSlice";
 import { selectFetch } from "../../../redux/slices/fetchingData/fetchingData";
 import { saveData } from "../../../helpers/saveData";
+import { fetchData } from "../../../helpers/fetchData";
 
 const getSum = (itemsInBusket) => {
   let sum = 0;
@@ -107,7 +108,10 @@ export default function Menu() {
         }}
       >
         <IconButton disabled={!fetchingData} onClick = {() => {
-          dispatch(saveData(myInfo , shopItems , pages))
+          Promise.all([fetchData("http://localhost:8000/shopItems") , fetchData("http://localhost:8000/myInfo")])
+            .then(data => {
+              dispatch(saveData(myInfo , shopItems , pages, data[0] , data[1]))
+            })
         }}>
           <Save
             sx={{
